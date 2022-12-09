@@ -4,12 +4,11 @@ class DirNode:
         self.elements = []
         self.name = name
         self.size = size
-        # print(f"___ add {name=} {size=}, to {parent}")
 
     def add(self, size:int, name:str):
         node = DirNode(size, name, self)
-        # if not any(item for item in self.elements if item.name == name):
-        self.elements.append(node)
+        if not any(item for item in self.elements if item.name == name):
+            self.elements.append(node)
         # print(node.print_path())
 
     def print_path(self):
@@ -17,13 +16,12 @@ class DirNode:
             path_str = self.parent.print_path() + '/' + self.name
         else:
             path_str = self.name
-        # path_str += '/' + self.name
         return path_str
 
-    def goup(self):
+    def go_up(self):
         return self.parent
 
-    def goto(self, name):
+    def go_to(self, name):
         for node in self.elements:
             if node.name == name:
                 return node
@@ -42,28 +40,25 @@ with open('input7', mode='r') as f:
     current_node = file_system
     while line := f.readline():
         match line.split():
-            case ['$', 'cd', param]:  # command cd
+            case ['$', 'cd', param]:
                 ls_output = False
                 if param == '..':
-                    current_node = current_node.goup()
+                    current_node = current_node.go_up()
                 elif param == '/':
                     current_node = file_system
                 else:
-                    current_node = current_node.goto(param)
-
-            case ['$', 'ls']:  # command ls
+                    current_node = current_node.go_to(param)
+            case ['$', 'ls']:
                 ls_output = True
-
             case ['dir', dir_name]:
                 if ls_output:
                     current_node.add(0, dir_name)
-
             case [value, file_name] if value.isnumeric():
                 if ls_output:
                     current_node.add(int(value), file_name)
 
     # calculate size
-    #list of (size,dirname)
+    # list of (size,dirname)
     dir_list:list[tuple[int,str]] = []
     root_size = file_system.calculate_size(dir_list)
     sum_of_small_dirs = 0
@@ -79,3 +74,4 @@ with open('input7', mode='r') as f:
     dir_list_sorted = sorted(dir_list, key=lambda x:x[0])
     dir_to_remove = next(item for item in dir_list_sorted if item[0] > space_to_free_up)
     print(f"PART 2 {dir_to_remove=}")
+
