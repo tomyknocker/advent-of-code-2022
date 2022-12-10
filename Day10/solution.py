@@ -12,6 +12,7 @@ class CPU:
 
     def print_on_screen(self):
         if pixel_pos := self.cycle % 40:
+            # check if pixel is in sprite range
             if self._register_x <= pixel_pos <= self._register_x+2:
                 pixel = '█'
             else:
@@ -19,14 +20,15 @@ class CPU:
             print(pixel, end='')
         else:
             print('')
+
     def _cpu_output(self):
-        self.print_on_screen()
         if not (self.cycle - 20) % 40:
             self._signal_strength.append((self.cycle, self.cycle * self._register_x))
         return
 
     def _cpu_cycle(self):
         self.cycle += 1
+        self.print_on_screen()
         self._cpu_output()
         return None
 
