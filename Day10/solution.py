@@ -13,7 +13,7 @@ class CPU:
     def print_on_screen(self):
         if pixel_pos := self.cycle % 40:
             if self._register_x <= pixel_pos <= self._register_x+2:
-                pixel = '#'
+                pixel = '█'
             else:
                 pixel = ' '
             print(pixel, end='')
