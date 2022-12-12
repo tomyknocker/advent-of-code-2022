@@ -61,12 +61,10 @@ part2_paths = []
 for start_pos2 in part2_start_positions:
     # print(start_pos2, end=' -->')
     result = g.get_shortest_paths(start_pos2, target_pos, mode='out', output='vpath')
-    try:
-        # print(len(result[0]))
-        if len(result[0]) > 0:
-            part2_paths.append(len(result[0]) - 1)
-    except:
-        print("NOPE")
+
+    # print(len(result[0]))
+    if len(result[0]) > 0:
+        part2_paths.append(len(result[0]) - 1)
 
 print('PART2:')
 print(sorted(part2_paths)[0])
